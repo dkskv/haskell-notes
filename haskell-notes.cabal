@@ -13,7 +13,6 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2023 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
@@ -25,7 +24,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Snake
   other-modules:
       Paths_haskell_notes
   hs-source-dirs:
@@ -33,6 +32,8 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , matrix >=0.3.6.1
+    , mtl >=2.2.2 && <2.3
   default-language: Haskell2010
 
 executable haskell-notes-exe
@@ -45,6 +46,8 @@ executable haskell-notes-exe
   build-depends:
       base >=4.7 && <5
     , haskell-notes
+    , matrix >=0.3.6.1
+    , mtl >=2.2.2 && <2.3
   default-language: Haskell2010
 
 test-suite haskell-notes-test
@@ -58,4 +61,6 @@ test-suite haskell-notes-test
   build-depends:
       base >=4.7 && <5
     , haskell-notes
+    , matrix >=0.3.6.1
+    , mtl >=2.2.2 && <2.3
   default-language: Haskell2010
