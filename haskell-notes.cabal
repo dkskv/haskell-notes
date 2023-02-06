@@ -7,13 +7,12 @@ cabal-version: 1.12
 name:           haskell-notes
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/haskell-notes#readme>
-homepage:       https://github.com/githubuser/haskell-notes#readme
-bug-reports:    https://github.com/githubuser/haskell-notes/issues
+homepage:       https://github.com/dkskv/haskell-notes#readme
+bug-reports:    https://github.com/dkskv/haskell-notes/issues
 author:         Author name here
 maintainer:     example@example.com
 copyright:      2023 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
@@ -21,11 +20,12 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/haskell-notes
+  location: https://github.com/dkskv/haskell-notes
 
 library
   exposed-modules:
-      Lib
+      Snake
+      ValidPairs
   other-modules:
       Paths_haskell_notes
   hs-source-dirs:
@@ -33,6 +33,8 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , matrix >=0.3.6.1
+    , mtl >=2.2.2 && <2.3
   default-language: Haskell2010
 
 executable haskell-notes-exe
@@ -45,6 +47,8 @@ executable haskell-notes-exe
   build-depends:
       base >=4.7 && <5
     , haskell-notes
+    , matrix >=0.3.6.1
+    , mtl >=2.2.2 && <2.3
   default-language: Haskell2010
 
 test-suite haskell-notes-test
@@ -58,4 +62,6 @@ test-suite haskell-notes-test
   build-depends:
       base >=4.7 && <5
     , haskell-notes
+    , matrix >=0.3.6.1
+    , mtl >=2.2.2 && <2.3
   default-language: Haskell2010
