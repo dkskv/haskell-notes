@@ -16,7 +16,6 @@ dependencies:
   - base >= 4.7 && < 5
   - mtl ^>= 2.2.2
   - matrix >= 0.3.6.1
-  - Unique >= 0.4.7.9
 
 ghc-options:
   - -Wall

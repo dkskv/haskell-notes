@@ -1,47 +1,41 @@
 module ValidPairs where
 
--- Список решений для https://thecode.media/small-talk/.
-validPairs = 
-    -- 5. Оставляем варианты длинной 1 (где 1 сумме соответствует 1 пара валидных слагаемых).
-    -- Повторно уменьшаем вложенность.
-    clearNonSingle =<< ( 
-    -- 4. Оставляем варианты длинной 1 (где 1 паре слагаемых соответствует 1 пара валидных множителей).
-    -- Заодно уменьшаем вложенность: [[xs,xs], [xs], [xs], []] -> [xs, xs].
-    -- Тем самым получаем список валидных слагаемых...Запутался)))
-    (clearNonSingle =<<) <$> 
-    -- 3. Отображаем каждое произведение на валидные множители (дающие валидную сумму).
-    (validFactors <$>) <$> 
-    -- 2. Отображаем каждую пару слагаемых на произведение.
-    (product <$>) <$> 
-    -- 1. Отображаем каждую валидную сумму на пары слагаемых: [x, x] -> [[Pair, Pair], [Pair]].
-    (termPairs <$> validSums)) 
+import Data.List
+
+-- Решение для https://thecode.media/small-talk/.
+validPairs = do
+    -- 1. Вычисление пар слагаемых для каждой суммы.
+    let groupedPairs = termPairs <$> validSums
+    -- 2. Нахождение уникальных произведений пар (присутствующих единожды среди всех сумм).
+    let uniqProducts = singles $ product <$> (groupedPairs >>= id)
+    -- 3. Удаление пар, дающих неуникальные(среди всех сумм) произведения.
+    x <- filter ((`elem` uniqProducts) . product) <$> groupedPairs
+    -- 4. Выбор пар, оставшихся единственными в своей группе(сумме).
+    clearNonSingle x
+
+singles :: Ord a => [a] -> [a]
+singles = (>>= clearNonSingle) . group . sort
 
 clearNonSingle (y:[]) = [y]
 clearNonSingle _ = []
 
--- Правило: сумма должна быть нечетной.
--- Правило: во всех разложениях суммы должно присутствовать составное число.
-isSumValid n = odd n && all (any isComposite) pairs && (not . null) pairs where
-    pairs = termPairs n
-
--- Список всех валидных сумм (11,17,23...)
-validSums = filter isSumValid [2..99]
-
--- Получить все валидные (дающие валидную сумму) разложения на множители
-validFactors n = filter (isSumValid . sum) (factorPairs n)
-
 -- Результат разложения: пара слагаемых или множителей.
--- (не используется список, чтобы избежать большой вложенности списков в промежуточных решениях).
 data Pair a = Pair a a deriving Show
 
 -- Для применения к Pair методов списка.
 instance Foldable Pair where
     foldr f ini (Pair a b) = foldr f ini [a,b]
 
--- Разложения n на 2 натуральных множителя > 1
-factorPairs n = [Pair x y | x <- [2..n], y <- [2..n], x * y == n, x <= y]
 -- Разложения n на 2 натуральных слагаемых > 1
 termPairs n = [Pair x y | x <- [2..n], y <- [2..n], x + y == n, x <= y]
+
+-- Список всех валидных сумм (11,17,23...)
+validSums = filter isSumValid [2..99]
+
+-- Правило: сумма должна быть нечетной.
+-- Правило: во всех разложениях суммы должно присутствовать составное число.
+isSumValid n = odd n && (not . null) pairs && all (any isComposite) pairs  where
+    pairs = termPairs n
 
 isComposite n = (n /= 1) && (not . isPrime $ n)
 
