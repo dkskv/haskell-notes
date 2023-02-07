@@ -1,6 +1,7 @@
 module Main (main) where
 
 import Snake
+import ValidPairs
 
 main :: IO ()
-main = snake
+main = putStr . show $ validPairs

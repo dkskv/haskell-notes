@@ -1,6 +1,6 @@
 name: haskell-notes
 version: 0.1.0.0
-github: "githubuser/haskell-notes"
+github: "dkskv/haskell-notes"
 license: BSD3
 author: "Author name here"
 maintainer: "example@example.com"
@@ -14,8 +14,9 @@ description: Please see the README on GitHub at <https://github.com/githubuser/h
 
 dependencies:
   - base >= 4.7 && < 5
-  - mtl ^>=2.2.2
-  - matrix >=0.3.6.1
+  - mtl ^>= 2.2.2
+  - matrix >= 0.3.6.1
+  - Unique >= 0.4.7.9
 
 ghc-options:
   - -Wall
