@@ -30,7 +30,7 @@ instance Foldable Pair where
 termPairs n = [Pair x y | x <- [2..n], y <- [2..n], x + y == n, x <= y]
 
 -- Список всех валидных сумм (11,17,23...)
-validSums = filter isSumValid [2..99]
+validSums = filter isSumValid [1..99]
 
 -- Правило: сумма должна быть нечетной.
 -- Правило: во всех разложениях суммы должно присутствовать составное число.
