@@ -13,17 +13,21 @@ snake = do
     let points = runSnakePoints n
     putStr . show $ fillMatrix (zero n n) (zip points [1..])
 
-fillMatrix = foldr $ \((Point x y), i) -> setElem i (y, x)
+fillMatrix :: Matrix Int -> [(Point, Int)] -> Matrix Int
+fillMatrix = foldr (\(Point x y, i) mat -> setElem i (y, x) mat)
 
 data Point = Point Int Int deriving Show
+
 data Env = Env { 
     countOfStepsStraight :: Int,
-    stepSign:: Int,
+    stepSign :: Int,
     currentPoint :: Point
 }
+
 type Snake = [Point]
 
-runSnakePoints n = evalState snakePoints (Env n 1 (Point (0) 1))
+runSnakePoints :: Int -> Snake
+runSnakePoints n = evalState snakePoints (Env n 1 (Point 0 1))
 
 snakePoints :: State Env Snake
 snakePoints = do 
@@ -31,11 +35,11 @@ snakePoints = do
    points1 <- replicateM n (step moveX)
    modify $ \e -> e { countOfStepsStraight = pred n }
 
-   n <- gets countOfStepsStraight
-   points2 <- replicateM n (step moveY)
+   n' <- gets countOfStepsStraight
+   points2 <- replicateM n' (step moveY)
    modify $ \e -> e { stepSign = negate (stepSign e) }
 
-   nextPoints <- if n <= 0 then return [] else snakePoints
+   nextPoints <- if n' <= 0 then return [] else snakePoints
    return $ points1 ++ points2 ++ nextPoints
 
 step :: (Point -> Int -> Point) -> State Env Point
@@ -43,5 +47,8 @@ step move = do
    modify (\e@(Env _ s p) -> e { currentPoint = move p s })
    gets currentPoint
 
+moveX :: Point -> Int -> Point
 moveX (Point x y) s = Point (x + s) y
-moveY (Point x y) s = Point x (y + s)   
+
+moveY :: Point -> Int -> Point
+moveY (Point x y) s = Point x (y + s)

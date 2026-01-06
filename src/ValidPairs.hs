@@ -1,8 +1,9 @@
-module ValidPairs where
+module ValidPairs (validPairs) where
 
-import Data.List
+import Data.List (group, sort)
 
 -- Решение для https://thecode.media/small-talk/.
+validPairs :: [Pair Int]
 validPairs = do
     -- 1. Вычисление пар слагаемых для каждой суммы.
     let groupedPairs = termPairs <$> validSums
@@ -16,6 +17,7 @@ validPairs = do
 singles :: Ord a => [a] -> [a]
 singles = (>>= clearNonSingle) . group . sort
 
+clearNonSingle :: [a] -> [a]
 clearNonSingle (y:[]) = [y]
 clearNonSingle _ = []
 
@@ -27,17 +29,24 @@ instance Foldable Pair where
     foldr f ini (Pair a b) = foldr f ini [a,b]
 
 -- Разложения n на 2 натуральных слагаемых > 1
+termPairs :: Int -> [Pair Int]
 termPairs n = [Pair x y | x <- [2..n], y <- [2..n], x + y == n, x <= y]
 
 -- Список всех валидных сумм (11,17,23...)
+validSums :: [Int]
 validSums = filter isSumValid [1..99]
 
 -- Правило: сумма должна быть нечетной.
 -- Правило: во всех разложениях суммы должно присутствовать составное число.
+isSumValid :: Int -> Bool
 isSumValid n = odd n && (not . null) pairs && all (any isComposite) pairs  where
     pairs = termPairs n
 
+isComposite :: Int -> Bool
 isComposite n = (n /= 1) && (not . isPrime $ n)
 
-isPrime n = factors n == [1,n] where
-    factors n = [x | x <- [1..n], mod n x == 0]
+isPrime :: Int -> Bool
+isPrime n = factors n == [1,n]
+
+factors :: Int -> [Int]
+factors m = [x | x <- [1..m], mod m x == 0]
