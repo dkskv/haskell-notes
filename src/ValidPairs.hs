@@ -3,6 +3,8 @@ module ValidPairs (validPairs) where
 import Data.List (group, sort)
 
 -- Решение для https://thecode.media/small-talk/.
+-- Для нечетных сумм в диапазоне 1..99 находит разложения
+-- на два слагаемых (>1) и отбирает пары с уникальными произведениями.
 validPairs :: [Pair Int]
 validPairs = do
     -- 1. Вычисление пар слагаемых для каждой суммы.
